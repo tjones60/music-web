@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+    <title>Audio Player</title>
+    <style>
+
+        body, td, th, button, input {
+            font-family: Verdana;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .btn {
+            width: 72px;
+            height: 22px;
+            border-radius: 4px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .ibtn {
+            width: 36px;
+            height: 22px;
+            border-radius: 4px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        a {
+            color:black;
+            text-decoration: none;
+        }
+
+        #playlist .current-song a {
+            color:blue;
+        }
+
+        #playlistName {
+            width: 144px;
+            height: 22px;
+            border-radius: 4px;
+        }
+
+    </style>
+    <script src="audio.js"></script>
+</head>
+
+<body>
+
+    <!-- <h2><u>Audio Player</u></h2> -->
+
+    <p style="text-align:center"><audio style="width:300px" src="" controls id="audioPlayer">
+        Sorry your browser does not support html5
+    </audio></p>
+
+    <p style="text-align:center">
+        <button class="btn" id="play_pause" onclick="play_pause()">Play</button>
+	    <button class="btn" id="previous" onclick="previous()">Previous</button>
+	    <button class="btn" id="next" onclick="next()">Next</button>
+
+    <p style="text-align:center">
+        <button class="btn" id="shuffle" onclick="shuffle()">Shuffle</button>
+        <label><input type="checkbox" id="repeat">Repeat</label>
+    </p>
+
+    <p style="text-align:center" id="nowPlayingInfo">
+        <b>Now Playing</b><br>
+        <u>Track</u>: <br>
+        <u>Title</u>: <br>
+        <u>Artist</u>: <br>
+        <u>Album</u>: <br>
+    </p>
+
+    <p style="text-align:center">
+        <button class="btn" id="clearPlaylist" onclick="clearPlaylist()">Clear</button>
+        <input type="text" id="playlistName" placeholder="Playlist">
+        <button class="btn" id="savePlaylist" onclick="savePlaylist()">Save</button>
+    </p>
+
+    <table id="playlist"></table>
+
+    <script>
+        initPlayer();
+    </script>
+
+</body>
+
+</html>

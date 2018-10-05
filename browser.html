@@ -1,0 +1,106 @@
+<html lang="en">
+<head>
+    <title>Browser</title>
+    <style>
+
+        body, td, th, button, input {
+            font-family: Verdana;
+            font-size: 12px;
+            outline: none;
+        }
+
+        table {
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        td, th {
+            border: 1px solid #C0C0C0;
+            padding: 5px;
+        }
+
+        tr {
+            height: 32px;
+        }
+
+        a {
+            color:black;
+            text-decoration: none;
+        }
+
+        .tab {
+            width: 72px;
+            height: 22px;
+            border-radius: 4px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .ibtn {
+            width: 36px;
+            height: 22px;
+            border-radius: 4px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .active {
+            font-weight: bold;
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        .transparent {
+            background: rgba(255,255,255,0.9);
+        }
+
+        .header {
+            position: fixed;
+            margin-top: 0;
+        }
+
+        #query {
+            width: 144px;
+            height: 22px;
+            border-radius: 4px;
+        }
+
+        tr:nth-child(even) {background-color: #f2f2f2;}
+    </style>
+    <script src="browser.js"></script>
+</head>
+
+<body>
+
+    <!-- <h2><u>Music Browser</u></h2> -->
+
+    <div class="transparent header" id="hback" style="width:100%;height:72px;top:0">
+
+        <p class="header" style="left:8px;top:8px">
+            <button class="tab" id="set_0" onclick="updateTable(0)">Artists</button>
+            <button class="tab" id="set_1" onclick="updateTable(1)">Albums</button>
+            <button class="tab" id="set_2" onclick="updateTable(2)">Songs</button>
+            <button class="tab" id="set_3" onclick="updateTable(3)">Playlists</button>
+        </p>
+
+        <p class="header" style="right:8px;top:8px">
+            <input type="text" id="query" name="query" placeholder="Search">
+        </p>
+
+        <p class="header" id="info" style="width:calc(100% - 16px);text-align:center;top:36px"></p>
+
+        <table class="header" id="tblhead" style="width:calc(100% - 16px);top:40px">
+            <thead><tr><th>Loading...</th></tr></thead>
+        </table>
+
+    </div>
+
+    <table id="tbldata" style="width:100%;margin-top:72px"></table>
+
+    <script>
+        initBrowser();
+    </script>
+
+</body>
+
+</html>
