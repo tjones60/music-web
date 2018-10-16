@@ -24,7 +24,9 @@ function initBrowser() {
 
     loadPlaylists();
 
-    document.getElementById("query").addEventListener("change", search);
+    document.getElementById("query").onkeydown = function(e) {
+        if (e.keyCode == 13) { search(); }
+    };
 }
 
 
@@ -54,7 +56,7 @@ function updateTable(view) {
 
         case 0: //artists
 
-            document.getElementById("set_0").className = "tab active";
+            document.getElementById("set_0").className = "btn active";
 
             var columns = '<colgroup>'+
                           '<col style="width:48px">'+
@@ -85,7 +87,7 @@ function updateTable(view) {
 
         case 1: //albums
 
-            document.getElementById("set_1").className = "tab active";
+            document.getElementById("set_1").className = "btn active";
 
             var columns = '<colgroup>'+
                           '<col style="width:48px">'+
@@ -121,7 +123,7 @@ function updateTable(view) {
 
         case 2: //songs
 
-            document.getElementById("set_2").className = "tab active";
+            document.getElementById("set_2").className = "btn active";
 
             var columns = '<colgroup>'+
                   '<col style="width:48px">'+
@@ -165,7 +167,7 @@ function updateTable(view) {
 
         case 3: //playlists
 
-            document.getElementById("set_3").className = "tab active";
+            document.getElementById("set_3").className = "btn active";
 
             var columns = '<colgroup>'+
                           '<col style="width:48px">'+
@@ -225,7 +227,7 @@ function showArtist(artist) {
                   '<col style="width:48px">'+
                   '<col style="width:48px">'+
                   '<col style="width:64px">'+
-                  '<col'+
+                  '<col>'+
                   '<col>'+
                   '</colgroup>';
 
@@ -422,10 +424,10 @@ function resetHeader() {
 
 function resetButtons() {
 
-    document.getElementById("set_0").className = "tab";
-    document.getElementById("set_1").className = "tab";
-    document.getElementById("set_2").className = "tab";
-    document.getElementById("set_3").className = "tab";
+    document.getElementById("set_0").className = "btn";
+    document.getElementById("set_1").className = "btn";
+    document.getElementById("set_2").className = "btn";
+    document.getElementById("set_3").className = "btn";
 }
 
 

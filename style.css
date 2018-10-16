@@ -1,0 +1,75 @@
+body, td, th, button, input {
+    font-family: Verdana;
+    font-size: 12px;
+    outline: none;
+}
+
+.browsetbl {
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.browsetbl td, th {
+    border: 1px solid #C0C0C0;
+    padding: 5px;
+}
+
+.browsetbl tr {
+    height: 32px;
+}
+
+.browsetbl tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+a {
+    color:black;
+    text-decoration: none;
+}
+
+.btn {
+    width: 72px;
+    height: 22px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.ibtn {
+    width: 36px;
+    height: 22px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.active {
+    font-weight: bold;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.transparent {
+    background: rgba(255,255,255,0.9);
+}
+
+.header {
+    position: fixed;
+    margin-top: 0;
+}
+
+#query {
+    width: 144px;
+    height: 22px;
+    border-radius: 4px;
+}
+
+#playlist .current-song a {
+    color:blue;
+}
+
+#playlistName {
+    width: 144px;
+    height: 22px;
+    border-radius: 4px;
+}

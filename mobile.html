@@ -1,0 +1,78 @@
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music</title>
+    <style>
+
+        iframe {
+            position: absolute;
+            margin: 0;
+            padding: 0;
+            border: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100vw;
+            height: calc(100vh - 50px);
+        }
+        
+        #tab-foot {
+            position: fixed;
+            margin: 0;
+            padding: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100vw;
+            height: 50px;
+            background: rgba(255,255,255,0.9);
+        }
+        
+        button {
+            position: fixed;
+            background: none;
+            border: none;
+            width: 33vw;
+            height: 50px;
+            bottom: 0;
+            font-family: Verdana;
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <iframe src="audio.html" id="player" name="player" style="display:block"></iframe>
+
+    <iframe src="browser.html" id="browser" name="browser" style="display:none"></iframe>
+    
+    <div id="tab-foot">
+        <button onclick="show_audio()" style="left:0">Now Playing</button>
+        <button onclick="show_browser()" style="left:33vw">Browser</button>
+        <button onclick="show_search()" style="left:66vw">Search</button>
+    </div>
+    
+    <script>
+        function show_audio() {
+            document.getElementById("player").style.display = "block";
+            document.getElementById("browser").style.display = "none";
+        }
+        function show_browser() {
+            document.getElementById("browser").style.display = "block";
+            document.getElementById("player").style.display = "none";
+        }
+        function show_search() {
+            s = document.getElementById("browser").contentWindow.document.getElementById("search");
+            if (s.style.display == "none") {
+                s.style.display = "block";
+            } else {
+                s.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
