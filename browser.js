@@ -1,15 +1,16 @@
 
 //browser.js
 
-//public variables
 
 var library = [];
 var playlists = [];
 var currentView = 0;
+var audioFrame;
 
-//functions
 
 function initBrowser() {
+
+    audioFrame = parent.document.getElementById('player').contentWindow;
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -76,9 +77,9 @@ function updateTable(view) {
             for (var artist in library) {
                 obj = library[artist];
                 str = html(JSON.stringify(obj));
-                tbldata += '<tr><td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.addArtist('+str+')">+</button></td>';
-                tbldata += '<td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addArtist('+str+')">&#9658</button></td>';
-                tbldata += '<td><a href="javascript:void(0)" onclick="showArtist(\''+artist+'\')">'+artist+'</a></td></tr>';
+                tbldata += '<tr><td><button class="ibtn" onclick="audioFrame.addArtist('+str+')">+</button></td>'+
+                           '<td><button class="ibtn" onclick="audioFrame.clearPlaylist();audioFrame.addArtist('+str+')">&#9658</button></td>'+
+                           '<td><a href="javascript:void(0)" onclick="showArtist(\''+artist+'\')">'+artist+'</a></td></tr>';
             }
 
             tbldata += '</tbody>';
@@ -110,10 +111,10 @@ function updateTable(view) {
                 for (var album in library[artist]) {
                     obj = library[artist][album];
                     str = html(JSON.stringify(obj));
-                    tbldata += '<tr><td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.addAlbum('+str+')">+</button></td>';
-                    tbldata += '<td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addAlbum('+str+')">&#9658</button></td>';
-                    tbldata += '<td><a href="javascript:void(0)" onclick="showAlbum(\''+artist+'\',\''+album+'\')">'+album+'</a></td>';
-                    tbldata += '<td><a href="javascript:void(0)" onclick="showArtist(\''+artist+'\')">'+artist+'</a></td></tr>';
+                    tbldata += '<tr><td><button class="ibtn" onclick="audioFrame.addAlbum('+str+')">+</button></td>'+
+                               '<td><button class="ibtn" onclick="audioFrame.clearPlaylist();audioFrame.addAlbum('+str+')">&#9658</button></td>'+
+                               '<td><a href="javascript:void(0)" onclick="showAlbum(\''+artist+'\',\''+album+'\')">'+album+'</a></td>'+
+                               '<td><a href="javascript:void(0)" onclick="showArtist(\''+artist+'\')">'+artist+'</a></td></tr>';
                 }
             }
 
@@ -126,13 +127,13 @@ function updateTable(view) {
             document.getElementById("set_2").className = "btn active";
 
             var columns = '<colgroup>'+
-                  '<col style="width:48px">'+
-                  '<col style="width:48px">'+
-                  '<col style="width:64px">'+
-                  '<col>'+
-                  '<col>'+
-                  '<col>'+
-                  '</colgroup>';
+                          '<col style="width:48px">'+
+                          '<col style="width:48px">'+
+                          '<col style="width:64px">'+
+                          '<col>'+
+                          '<col>'+
+                          '<col>'+
+                          '</colgroup>';
 
             var tblhead = columns+
                           '<thead><tr>'+
@@ -151,12 +152,12 @@ function updateTable(view) {
                     for (var index in library[artist][album]) {
                         obj = library[artist][album][index];
                         str = html(JSON.stringify(obj));
-                        tbldata += '<tr><td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">+</button></td>';
-                        tbldata += '<td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">&#9658</button></td>';
-                        tbldata += '<td>'+obj.track+'</td>';
-                        tbldata += '<td><a href="javascript:void(0)" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">'+obj.title+'</a></td>';
-                        tbldata += '<td><a href="javascript:void(0)" onclick="showAlbum(\''+obj.album_artist+'\',\''+obj.album+'\')">'+obj.album+'</a></td>';
-                        tbldata += '<td><a href="javascript:void(0)" onclick="showArtist(\''+obj.album_artist+'\')">'+obj.artist+'</a></td></tr>';
+                        tbldata += '<tr><td><button class="ibtn" onclick="audioFrame.addSong('+str+')">+</button></td>'+
+                                   '<td><button class="ibtn" onclick="audioFrame.clearPlaylist();audioFrame.addSong('+str+')">&#9658</button></td>'+
+                                   '<td>'+obj.track+'</td>'+
+                                   '<td><a href="javascript:void(0)" onclick="audioFrame.clearPlaylist();audioFrame.addSong('+str+')">'+obj.title+'</a></td>'+
+                                   '<td><a href="javascript:void(0)" onclick="showAlbum(\''+obj.album_artist+'\',\''+obj.album+'\')">'+obj.album+'</a></td>'+
+                                   '<td><a href="javascript:void(0)" onclick="showArtist(\''+obj.album_artist+'\')">'+obj.artist+'</a></td></tr>';
                     }
                 }
             }
@@ -189,10 +190,10 @@ function updateTable(view) {
             for (var playlist in playlists) {
                 obj = playlists[playlist];
                 str = html(JSON.stringify(obj));
-                tbldata += '<tr><td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.addAlbum('+str+')">+</button></td>';
-                tbldata += '<td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.document.getElementById(\'playlistName\').value=\''+playlist+'\';parent.document.getElementById(\'player\').contentWindow.addAlbum('+str+')">&#9658</button></td>';
-                tbldata += '<td><a href="javascript:void(0)" onclick="showPlaylist(\''+playlist+'\')">'+playlist+'</a></td>';
-                tbldata += '<td><button class="ibtn" onclick="deletePlaylist(\''+playlist+'\')">X</button></td></tr>';
+                tbldata += '<tr><td><button class="ibtn" onclick="audioFrame.addAlbum('+str+')">+</button></td>'+
+                           '<td><button class="ibtn" onclick="audioFrame.clearPlaylist();audioFrame.document.getElementById(\'playlistName\').value=\''+playlist+'\';audioFrame.addAlbum('+str+')">&#9658</button></td>'+
+                           '<td><a href="javascript:void(0)" onclick="showPlaylist(\''+playlist+'\')">'+playlist+'</a></td>'+
+                           '<td><button class="ibtn" onclick="deletePlaylist(\''+playlist+'\')">X</button></td></tr>';
             }
 
             tbldata += '</tbody>';
@@ -219,8 +220,8 @@ function showArtist(artist) {
     document.getElementById("tbldata").style.marginTop = "112px";
 
     str = html(JSON.stringify(library[artist]));
-    var info = '<button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.addArtist('+str+')">+</button> '+
-               '<button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addArtist('+str+')">&#9658</button> '+
+    var info = '<button class="ibtn" onclick="audioFrame.addArtist('+str+')">+</button> '+
+               '<button class="ibtn" onclick="audioFrame.clearPlaylist();audioFrame.addArtist('+str+')">&#9658</button> '+
                '<b>'+artist+'</b>';
 
     var columns = '<colgroup>'+
@@ -245,12 +246,12 @@ function showArtist(artist) {
         for (var index in library[artist][album]) {
             obj = library[artist][album][index];
             str = html(JSON.stringify(obj));
-            tbldata += '<tr><td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">+</button></td>';
-            tbldata += '<td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">&#9658</button></td>';
-            tbldata += '<td>'+obj.track+'</td>';
-            tbldata += '<td><a href="javascript:void(0)" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">'+obj.title+'</a>';
-            if (artist != obj.artist) { tbldata += ' - <i>'+obj.artist+'</i>'; }
-            tbldata += '</td><td><a href="javascript:void(0)" onclick="showAlbum(\''+obj.album_artist+'\',\''+obj.album+'\')">'+obj.album+'</a></td></tr>';
+            tbldata += '<tr><td><button class="ibtn" onclick="audioFrame.addSong('+str+')">+</button></td>'+
+                       '<td><button class="ibtn" onclick="audioFrame.clearPlaylist();audioFrame.addSong('+str+')">&#9658</button></td>'+
+                       '<td>'+obj.track+'</td>'+
+                       '<td><a href="javascript:void(0)" onclick="audioFrame.clearPlaylist();audioFrame.addSong('+str+')">'+obj.title+'</a>'+
+                       (artist != obj.artist ? ' - <i>'+obj.artist+'</i>' : '')+'</td>'+
+                       '<td><a href="javascript:void(0)" onclick="showAlbum(\''+obj.album_artist+'\',\''+obj.album+'\')">'+obj.album+'</a></td></tr>';
         }
     }
     tbldata += '</tbody>';
@@ -270,8 +271,8 @@ function showAlbum(artist,album) {
     document.getElementById("tbldata").style.marginTop = "112px";
 
     str = html(JSON.stringify(library[artist][album]));
-    var info = '<button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.addAlbum('+str+')">+</button> '+
-               '<button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addAlbum('+str+')">&#9658</button> '+
+    var info = '<button class="ibtn" onclick="audioFrame.addAlbum('+str+')">+</button> '+
+               '<button class="ibtn" onclick="audioFrame.clearPlaylist();audioFrame.addAlbum('+str+')">&#9658</button> '+
                '<b>'+album+'</b><br><a href="javascript:void(0)" onclick="showArtist(\''+artist+'\')">'+artist+'</button>';
 
     var columns = '<colgroup>'+
@@ -293,12 +294,11 @@ function showAlbum(artist,album) {
     for (var index in library[artist][album]) {
         obj = library[artist][album][index];
         str = html(JSON.stringify(obj));
-        tbldata += '<tr><td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">+</button></td>';
-        tbldata += '<td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">&#9658</button></td>';
-        tbldata += '<td>'+obj.track+'</td>';
-        tbldata += '<td><a href="javascript:void(0)" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">'+obj.title+'</a>';
-        if (artist != obj.artist) { tbldata += ' - <i>'+obj.artist+'</i>'; }
-        tbldata += '</td></tr>';
+        tbldata += '<tr><td><button class="ibtn" onclick="audioFrame.addSong('+str+')">+</button></td>'+
+                   '<td><button class="ibtn" onclick="audioFrame.clearPlaylist();audioFrame.addSong('+str+')">&#9658</button></td>'+
+                   '<td>'+obj.track+'</td>'+
+                   '<td><a href="javascript:void(0)" onclick="audioFrame.clearPlaylist();audioFrame.addSong('+str+')">'+obj.title+'</a>'+
+                   (artist != obj.artist ? ' - <i>'+obj.artist+'</i>' : '')+'</td></tr>';
     }
     tbldata += '</tbody>';
 
@@ -317,18 +317,18 @@ function showPlaylist(playlist) {
     document.getElementById("tbldata").style.marginTop = "112px";
 
     str = html(JSON.stringify(playlists[playlist]));
-    var info = '<button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.addAlbum('+str+')">+</button> '+
-               '<button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.document.getElementById(\'playlistName\').value=\''+playlist+'\';parent.document.getElementById(\'player\').contentWindow.addAlbum('+str+')">&#9658</button> '+
+    var info = '<button class="ibtn" onclick="audioFrame.addAlbum('+str+')">+</button> '+
+               '<button class="ibtn" onclick="audioFrame.clearPlaylist();audioFrame.document.getElementById(\'playlistName\').value=\''+playlist+'\';audioFrame.addAlbum('+str+')">&#9658</button> '+
                '<b>'+playlist+'</b>';
 
     var columns = '<colgroup>'+
-         '<col style="width:48px">'+
-         '<col style="width:48px">'+
-         '<col style="width:64px">'+
-         '<col>'+
-         '<col>'+
-         '<col>'+
-         '</colgroup>';
+                  '<col style="width:48px">'+
+                  '<col style="width:48px">'+
+                  '<col style="width:64px">'+
+                  '<col>'+
+                  '<col>'+
+                  '<col>'+
+                  '</colgroup>';
 
     var tblhead = columns+
                  '<thead><tr>'+
@@ -345,12 +345,12 @@ function showPlaylist(playlist) {
     for (var index in playlists[playlist]) {
         obj = playlists[playlist][index];
         str = html(JSON.stringify(obj));
-        tbldata += '<tr><td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">+</button></td>';
-        tbldata += '<td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">&#9658</button></td>';
-        tbldata += '<td>'+obj.track+'</td>';
-        tbldata += '<td><a href="javascript:void(0)" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">'+obj.title+'</a></td>';
-        tbldata += '<td><a href="javascript:void(0)" onclick="showAlbum(\''+obj.album_artist+'\',\''+obj.album+'\')">'+obj.album+'</a></td>';
-        tbldata += '<td><a href="javascript:void(0)" onclick="showArtist(\''+obj.album_artist+'\')">'+obj.artist+'</a></td></tr>';
+        tbldata += '<tr><td><button class="ibtn" onclick="audioFrame.addSong('+str+')">+</button></td>'+
+                   '<td><button class="ibtn" onclick="audioFrame.clearPlaylist();audioFrame.addSong('+str+')">&#9658</button></td>'+
+                   '<td>'+obj.track+'</td>'+
+                   '<td><a href="javascript:void(0)" onclick="audioFrame.clearPlaylist();audioFrame.addSong('+str+')">'+obj.title+'</a></td>'+
+                   '<td><a href="javascript:void(0)" onclick="showAlbum(\''+obj.album_artist+'\',\''+obj.album+'\')">'+obj.album+'</a></td>'+
+                   '<td><a href="javascript:void(0)" onclick="showArtist(\''+obj.album_artist+'\')">'+obj.artist+'</a></td></tr>';
     }
 
     document.getElementById('info').innerHTML = info;
@@ -396,12 +396,12 @@ function search() {
                     obj = library[artist][album][index];
                     if (r.test(obj.title) || r.test(obj.artist) || r.test(obj.album)) {
                         str = html(JSON.stringify(obj));
-                        tbldata += '<tr><td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">+</button></td>';
-                        tbldata += '<td><button class="ibtn" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">&#9658</button></td>';
-                        tbldata += '<td>'+obj.track+'</td>';
-                        tbldata += '<td><a href="javascript:void(0)" onclick="parent.document.getElementById(\'player\').contentWindow.clearPlaylist();parent.document.getElementById(\'player\').contentWindow.addSong('+str+')">'+obj.title+'</a></td>';
-                        tbldata += '<td><a href="javascript:void(0)" onclick="showAlbum(\''+obj.album_artist+'\',\''+obj.album+'\')">'+obj.album+'</a></td>';
-                        tbldata += '<td><a href="javascript:void(0)" onclick="showArtist(\''+obj.album_artist+'\')">'+obj.artist+'</a></td></tr>';
+                        tbldata += '<tr><td><button class="ibtn" onclick="audioFrame.addSong('+str+')">+</button></td>'+
+                                   '<td><button class="ibtn" onclick="audioFrame.clearPlaylist();audioFrame.addSong('+str+')">&#9658</button></td>'+
+                                   '<td>'+obj.track+'</td>'+
+                                   '<td><a href="javascript:void(0)" onclick="audioFrame.clearPlaylist();audioFrame.addSong('+str+')">'+obj.title+'</a></td>'+
+                                   '<td><a href="javascript:void(0)" onclick="showAlbum(\''+obj.album_artist+'\',\''+obj.album+'\')">'+obj.album+'</a></td>'+
+                                   '<td><a href="javascript:void(0)" onclick="showArtist(\''+obj.album_artist+'\')">'+obj.artist+'</a></td></tr>';
                     }
                 }
             }
@@ -415,6 +415,7 @@ function search() {
 
 
 function resetHeader() {
+
     document.getElementById("info").innerHTML = "";
     document.getElementById("hback").style.height = "72px";
     document.getElementById("tblhead").style.top = "40px";
@@ -447,6 +448,7 @@ function deletePlaylist(playlist) {
 
 
 function html(str) {
+
     if (typeof(str) == "string") {
         str = str.replace(/&/g, "&amp;");
         str = str.replace(/"/g, "&quot;");

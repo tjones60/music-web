@@ -9,18 +9,24 @@
 
     <!-- <h2><u>Audio Player</u></h2> -->
 
-    <p style="text-align:center"><audio style="width:300px" src="" controls id="audioPlayer">
-        Sorry your browser does not support html5
-    </audio></p>
-
     <p style="text-align:center">
-        <button class="btn" id="play_pause" onclick="play_pause()">Play</button>
-	    <button class="btn" id="previous" onclick="previous()">Previous</button>
-	    <button class="btn" id="next" onclick="next()">Next</button>
-
-    <p style="text-align:center">
+        <audio id="audioPlayer1"></audio>
+        <audio id="audioPlayer2"></audio>
+        <button class="ibtn" id="play_pause" onclick="play_pause()">&#9658;</button>
+        <button class="ibtn" style="width:48px" id="previous" onclick="previous()">&#9668&#9668;</button>
+        <button class="ibtn" style="width:48px" id="next" onclick="next()">&#9658&#9658;</button>
         <button class="btn" id="shuffle" onclick="shuffle()">Shuffle</button>
         <label><input type="checkbox" id="repeat">Repeat</label>
+    </p>
+
+    <p style="text-align:center">
+        <input type="range" min="0" max="0" value="0" id="playhead" style="width:192px">
+        <label id="currentTime">--:--</label> / <label id="duration">--:--</label>
+    </p>
+
+    <p style="text-align:center">
+        Volume: <input type="range" min="0" max="100" value="50" id="volume" style="width:144px">
+        <label><input type="checkbox" id="mute">Mute</label>
     </p>
 
     <p style="text-align:center" id="nowPlayingInfo">
@@ -37,7 +43,7 @@
         <button class="btn" id="savePlaylist" onclick="savePlaylist()">Save</button>
     </p>
 
-    <table id="playlist"></table>
+    <ul id="playlist" style="width:100%"></ul>
 
     <script>
         initPlayer();

@@ -64,8 +64,18 @@ a {
     border-radius: 4px;
 }
 
+#playlist {
+    list-style-type: none;
+    padding: 0 0 0 0;
+}
+
+#playlist li {
+    min-height: 24px;
+    border-top: 1px solid white;
+}
+
 #playlist .current-song a {
-    color:blue;
+    font-weight: bold;
 }
 
 #playlistName {
