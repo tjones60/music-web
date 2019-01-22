@@ -102,6 +102,8 @@ function addSong(song) {
 
     playlist.push(song);
 
+	updateList();
+	
     if (audioPlayer.paused)
         play(playlist.length - 1);
 }
@@ -115,6 +117,8 @@ function addAlbum(album) {
 
     for (var index in album)
         playlist.push(album[index]);
+	
+	updateList();
 
     if (audioPlayer.paused)
         play(first);
@@ -131,6 +135,8 @@ function addArtist(artist) {
     for (var album in artist)
         for (var index in artist[album])
             playlist.push(artist[album][index]);
+		
+	updateList();
 
     if (audioPlayer.paused)
         play(first);
