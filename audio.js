@@ -12,7 +12,6 @@ var playhead;           //range input object used as the playhead
 var volume;             //range input object used as the volume slider
 var mute;               //checkbox used to mute the audio
 var playlist = [];      //mutable array of song objects in play queue
-var preloadIndex = -1;  //playlist index of the preloaded song (-1 for none)
 var browserFrame;       //stores a reference to the browser frame
 
 
@@ -30,15 +29,19 @@ function initPlayer() {
     audioPlayer.addEventListener('ended', auto_advance);
     audioPlayer.addEventListener('pause', set_play_icon);
     audioPlayer.addEventListener('play', set_pause_icon);
+	audioPlayer.addEventListener('durationchange', set_duration);
     audioPreloader.addEventListener('ended', auto_advance);
     audioPreloader.addEventListener('pause', set_play_icon);
     audioPreloader.addEventListener('play', set_pause_icon);
+	audioPreloader.addEventListener('durationchange', set_duration);
 
-    audioPlayer.addEventListener('durationchange', set_duration);
     playhead.addEventListener('input', move_playhead);
     volume.addEventListener('input', set_volume);
     mute.addEventListener('change', set_mute);
     setInterval(update_playhead, 1000);
+	
+	set_volume();
+	set_mute();
 }
 
 
@@ -228,36 +231,33 @@ function savePlaylist() {
 function play(index) {
 //swaps the audioPlayer and audioPreloader if the song has been preloaded,
 //then plays the song at index in the playlist and preloads the next song
-
+	
     if (arguments.length == 1) {
 
         currentSong = index;
 
-        audioPreloader.removeEventListener('durationchange', set_duration);
-        audioPlayer.addEventListener('durationchange', set_duration);
-
         if (encodeURI(playlist[currentSong].src) == audioPreloader.src.substr(audioPreloader.src.indexOf('/jones')+6)) {
-
+			
+			audioPlayer.pause();
+			audioPlayer.currentTime = 0;
+			
             var tmp = audioPlayer;
             audioPlayer = audioPreloader;
             audioPreloader = tmp;
-
             audioPlayer.play();
 
         } else {
 
             audioPlayer.src = '/jones'+playlist[currentSong].src;
-            audioPlayer.play();
+			audioPlayer.play();
         }
 
-        if (currentSong + 1 < playlist.length) {
-
+        if (currentSong + 1 < playlist.length)
             audioPreloader.src = '/jones'+playlist[currentSong + 1].src;
-            preloadIndex = currentSong + 1;
-        }
 
         updateInfo();
         updateList();
+		set_duration();
     }
 }
 
@@ -340,12 +340,16 @@ function updateCurrent() {
 function formatTime(s) {
 //converts seconds to a string of minutes:seconds
 
-    s = Math.round(s)
-    m = Math.floor(s / 60);
-    s = s % 60;
-    m = m < 10 ? 0 + String(m) : String(m)
-    s = s < 10 ? 0 + String(s) : String(s)
-    return m + ":" + s
+    if (isNaN(s)) {
+		return "--:--";
+	} else {
+		s = Math.round(s);
+		m = Math.floor(s / 60);
+		s = s % 60;
+		m = m < 10 ? 0 + String(m) : String(m);
+		s = s < 10 ? 0 + String(s) : String(s);
+		return m + ":" + s;
+	}
 }
 
 
@@ -382,9 +386,9 @@ function set_play_icon() {
 function set_duration() {
 //updates the duration label to reflect the current song
 //called by the audioPlayer durationchange event listener
-
-    playhead.max = audioPlayer.duration;
-    document.getElementById('duration').innerHTML = formatTime(audioPlayer.duration);
+	
+	playhead.max = isNaN(audioPlayer.duration) ? 0 : audioPlayer.duration;
+	document.getElementById('duration').innerHTML = formatTime(audioPlayer.duration);
 }
 
 
